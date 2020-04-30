@@ -9,52 +9,49 @@
 import Foundation
 
 let weatherServices = WeatherServices()
-let cityServices: CityServices = CityServices()
-let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-let jsonFileURL = documentsDirectory.appendingPathComponent("city_tiny.list").appendingPathExtension("json")
-var cityId: String = ""
-var citiesIdsArray: [String] = []
-var cityName: String
+let cityServices = CityServices()
+
+
 
 print("Welcome to the WeatherApp!")
 
 
+
+var usersChoice: String
 repeat {
-    print("Please enter a city name and enter q when you're done: ")
-    cityName = readLine()!
-    if let city = cityServices.findCity(cityName: cityName, jsonFileURL: jsonFileURL) {
-        cityId = String(city.id)
-        citiesIdsArray.append(cityId)
-    } else {
-        print("The city \(cityName) you entered could not be found")
-    }
-    print("citiesIdsArray so far...: \(citiesIdsArray)")
-} while(cityName.isEmpty || cityName != "q")
+    print("************************   MENU   ***************************")
+    print("*  Please select an option from below:                      *")
+    print("*  1 - Get current weather conditions for a city            *")
+    print("*  2 - Get current weather conditions for a list of cities  *")
+    print("*  3 - Get 5 day weather forecast for city                  *")
+    print("*************************************************************")
+    usersChoice = readLine()!
+} while(usersChoice != "1" && usersChoice != "2" && usersChoice != "3")
 
 
 
-print("citiesIdsArray[0]: \(citiesIdsArray[0])")
-weatherServices.searchFiveDayWeatherByCityId(cityId: citiesIdsArray[0]).resume()
+switch usersChoice {
+    case "1":
+        print("You chose menu 1 - Get current weather conditions for a city")
+        if let city = cityServices.getCityFromUser() {
+            weatherServices.searchCurrentWeatherByCityId(cityId: String(city.id)).resume()
+        }
+    
+    case "2":
+        print("You chose menu 2 - Get current weather conditions for a list of cities")
+        let citiesArray = cityServices.getCitiesFromUser()
+        let citiesIds = citiesArray.map { String($0.id) }
+        weatherServices.searchCurrentWeatherByCityIds(cityIds: citiesIds).resume()
+    
+    case "3":
+        print("You chose value 3 - Get 5 day weather forecast for city")
+        if let city = cityServices.getCityFromUser() {
+            print("Here is the 5 day weather forecast for \(city.name), \(city.country)")
+            weatherServices.searchFiveDayWeatherByCityId(cityId: String(city.id)).resume()
+        }
+    default:
+        print("Error, this choice is not in the menu")
+}
+
+
 RunLoop.main.run()
-
-
-
-
-
-
-
-
-
-
-
-/*
-Search one city
- */
-//if let city = findCity(cityName: cityName, jsonFileURL: jsonFileURL) {
-//    cityId = String(city.id)
-//    searchCurrentWeatherByCityId(cityId: cityId).resume()
-//    RunLoop.main.run()
-//} else {
-//    print("The city \(cityName) could not be found")
-//}
-

@@ -16,14 +16,15 @@ import Foundation
 struct Constants {
     static let BASE_URL = URL(string: "http://api.openweathermap.org/data/2.5")!
     static let API_KEY = "75be34154e6ffc7c6e01c7cc07b69a96"
+    static let UNITS = "metric"
+    static let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+    static let jsonFileURL = documentsDirectory.appendingPathComponent("city.list").appendingPathExtension("json")
 }
-
 
 
 /*
  * city.list.json data Models
  */
-
 struct Coord: Codable {
     let lon: Float
     let lat: Float
@@ -38,22 +39,29 @@ struct City: Codable {
 }
 
 
-
 /*
  * OpenWeatherMap API data Models
  */
-
 struct WeatherReports: Codable {
     let cnt: Int
     let list: [WeatherReport]
 }
 
 struct WeatherReport: Codable {
+    let name: String?
+    let sys: Sys
     let dt: Double
     let weather: [Weather]
     let main: Main
     let visibility: Int? // Optional value, only for 5 day forecast
     let clouds: Clouds
+}
+
+struct Sys: Codable {
+    let country: String?
+    let timezone: Int?
+    let sunrise: Int?
+    let sunset: Int?
 }
 
 struct Weather: Codable {
