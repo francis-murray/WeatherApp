@@ -8,75 +8,53 @@
 
 import Foundation
 
-print("Hello, World!")
-let API_KEY = "75be34154e6ffc7c6e01c7cc07b69a96"
+let weatherServices = WeatherServices()
+let cityServices: CityServices = CityServices()
+let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+let jsonFileURL = documentsDirectory.appendingPathComponent("city_tiny.list").appendingPathExtension("json")
+var cityId: String = ""
+var citiesIdsArray: [String] = []
+var cityName: String
 
-struct Weather: Codable {
-    let id: Int
-    let main: String
-    let description: String
-    let icon: String
-}
-
-
-struct Main: Codable {
-    let temp: Float
-    let feels_like: Float
-    let temp_min: Float
-    let temp_max: Float
-    let pressure: Float
-    let humidity: Float
-}
-
-struct Clouds: Codable {
-    let all: Int
-}
-
-struct Wind: Codable {
-    let speed: Float
-    let deg: Float
-}
-
-struct WeatherReport: Codable {
-    let weather: [Weather]
-    let main: Main
-    let visibility: Int
-    let clouds: Clouds
-}
-
-let query: [String: String] = [
-    "q" : "Paris",
-    "appid" : API_KEY
-]
+print("Welcome to the WeatherApp!")
 
 
-extension URL {
-    func withQueries(_ queries: [String: String]) -> URL? {
-        var components = URLComponents(url: self, resolvingAgainstBaseURL: true)
-        components?.queryItems = queries.map {
-            URLQueryItem(name: $0.0, value: $0.1)
-        }
-        return components?.url
+repeat {
+    print("Please enter a city name and enter q when you're done: ")
+    cityName = readLine()!
+    if let city = cityServices.findCity(cityName: cityName, jsonFileURL: jsonFileURL) {
+        cityId = String(city.id)
+        citiesIdsArray.append(cityId)
+    } else {
+        print("The city \(cityName) you entered could not be found")
     }
-}
-
-let baseURL = URL(string: "http://api.openweathermap.org/data/2.5/weather")!
-let url = baseURL.withQueries(query)!
-print("url: ", url)
-
-let task = URLSession.shared.dataTask(with: url) {
-    (data, response, error) in
-    let jsonDecoder = JSONDecoder()
-    if let data = data,
-        let weatherReport = try? jsonDecoder.decode(WeatherReport.self, from: data) {
-        print(weatherReport)
-    }
-    else {
-        print("The API response could not be decoded")
-    }
-}
-task.resume()
+    print("citiesIdsArray so far...: \(citiesIdsArray)")
+} while(cityName.isEmpty || cityName != "q")
 
 
+
+print("citiesIdsArray[0]: \(citiesIdsArray[0])")
+weatherServices.searchFiveDayWeatherByCityId(cityId: citiesIdsArray[0]).resume()
 RunLoop.main.run()
+
+
+
+
+
+
+
+
+
+
+
+/*
+Search one city
+ */
+//if let city = findCity(cityName: cityName, jsonFileURL: jsonFileURL) {
+//    cityId = String(city.id)
+//    searchCurrentWeatherByCityId(cityId: cityId).resume()
+//    RunLoop.main.run()
+//} else {
+//    print("The city \(cityName) could not be found")
+//}
 
