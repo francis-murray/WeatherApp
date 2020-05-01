@@ -17,6 +17,7 @@ struct Constants {
     static let BASE_URL = URL(string: "http://api.openweathermap.org/data/2.5")!
     static let API_KEY = "75be34154e6ffc7c6e01c7cc07b69a96"
     static let UNITS = "metric"
+    static let DEGREE_SYMB = "°C"
     static let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
     static let jsonFileURL = documentsDirectory.appendingPathComponent("city.list").appendingPathExtension("json")
 }

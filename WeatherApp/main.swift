@@ -11,23 +11,19 @@ import Foundation
 let weatherServices = WeatherServices()
 let cityServices = CityServices()
 
-
-
 print("Welcome to the WeatherApp!")
-
-
-
 var usersChoice: String
+
 repeat {
     print("************************   MENU   ***************************")
     print("*  Please select an option from below:                      *")
     print("*  1 - Get current weather conditions for a city            *")
     print("*  2 - Get current weather conditions for a list of cities  *")
     print("*  3 - Get 5 day weather forecast for city                  *")
+    print("*  4 - Quit                                                 *")
     print("*************************************************************")
     usersChoice = readLine()!
-} while(usersChoice != "1" && usersChoice != "2" && usersChoice != "3")
-
+} while(usersChoice != "1" && usersChoice != "2" && usersChoice != "3" && usersChoice != "4")
 
 
 switch usersChoice {
@@ -49,6 +45,8 @@ switch usersChoice {
             print("Here is the 5 day weather forecast for \(city.name), \(city.country)")
             weatherServices.searchFiveDayWeatherByCityId(cityId: String(city.id)).resume()
         }
+    case "4":
+        print("Thank you for using the WeatherApp! Goodbye.")
     default:
         print("Error, this choice is not in the menu")
 }

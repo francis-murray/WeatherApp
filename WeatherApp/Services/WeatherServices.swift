@@ -30,7 +30,7 @@ class WeatherServices {
                     if let name = weatherReport.name, let country = weatherReport.sys.country {
                         print("Weather in \(name), \(country)", terminator: ": ")
                     }
-                    print("\(weatherReport.weather[0].description), temperature: \(weatherReport.main.temp), feels like: \(weatherReport.main.feels_like)")
+                print("\(weatherReport.weather[0].description), temperature: \(weatherReport.main.temp)\(Constants.DEGREE_SYMB), feels like: \(weatherReport.main.feels_like)\(Constants.DEGREE_SYMB)")
             }
             else {
                 print("The API response could not be decoded")
@@ -61,7 +61,7 @@ class WeatherServices {
                     if let name = weatherReport.name, let country = weatherReport.sys.country {
                         print("Weather in \(name), \(country)", terminator: ": ")
                     }
-                    print("\(weatherReport.weather[0].description), temperature: \(weatherReport.main.temp), feels like: \(weatherReport.main.feels_like)")
+                    print("\(weatherReport.weather[0].description), temperature: \(weatherReport.main.temp)\(Constants.DEGREE_SYMB), feels like: \(weatherReport.main.feels_like)\(Constants.DEGREE_SYMB)")
                 }
             }
             else {
@@ -97,7 +97,7 @@ class WeatherServices {
                 for weatherReport in weatherReports.list {
                     let date = Date(timeIntervalSince1970: weatherReport.dt)
                     print(dateFormatter.string(from: date), terminator: ": ")
-                    print("\(weatherReport.weather[0].description), temperature: \(weatherReport.main.temp), feels like: \(weatherReport.main.feels_like)")
+                    print("\(weatherReport.weather[0].description), temperature: \(weatherReport.main.temp)\(Constants.DEGREE_SYMB), feels like: \(weatherReport.main.feels_like)\(Constants.DEGREE_SYMB)")
                 }
             }
             else {
