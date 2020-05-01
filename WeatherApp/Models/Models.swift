@@ -19,7 +19,7 @@ struct Constants {
     static let UNITS = "metric"
     static let DEGREE_SYMB = "°C"
     static let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-    static let jsonFileURL = documentsDirectory.appendingPathComponent("city.list").appendingPathExtension("json")
+    static let jsonFileURL = documentsDirectory.appendingPathComponent("city.list.min").appendingPathExtension("json")
 }
 
 
