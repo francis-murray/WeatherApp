@@ -7,7 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1577999C24507CD10096E470 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1577999B24507CD10096E470 /* main.swift */; };
+		15903BDB245B11DD00C5FA6D /* WeatherServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15903BDA245B11DD00C5FA6D /* WeatherServices.swift */; };
+		15903BDD245B128000C5FA6D /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15903BDC245B128000C5FA6D /* Models.swift */; };
+		15903BE1245B417D00C5FA6D /* CityServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15903BE0245B417D00C5FA6D /* CityServices.swift */; };
+		15F5CB112459E7A400637A64 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F5CB102459E7A400637A64 /* main.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -24,7 +27,10 @@
 
 /* Begin PBXFileReference section */
 		1577999824507CD10096E470 /* WeatherApp */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = WeatherApp; sourceTree = BUILT_PRODUCTS_DIR; };
-		1577999B24507CD10096E470 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		15903BDA245B11DD00C5FA6D /* WeatherServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherServices.swift; sourceTree = "<group>"; };
+		15903BDC245B128000C5FA6D /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		15903BE0245B417D00C5FA6D /* CityServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityServices.swift; sourceTree = "<group>"; };
+		15F5CB102459E7A400637A64 /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,9 +63,28 @@
 		1577999A24507CD10096E470 /* WeatherApp */ = {
 			isa = PBXGroup;
 			children = (
-				1577999B24507CD10096E470 /* main.swift */,
+				15903BE3245B420400C5FA6D /* Models */,
+				15903BE2245B41E700C5FA6D /* Services */,
+				15F5CB102459E7A400637A64 /* main.swift */,
 			);
 			path = WeatherApp;
+			sourceTree = "<group>";
+		};
+		15903BE2245B41E700C5FA6D /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				15903BDA245B11DD00C5FA6D /* WeatherServices.swift */,
+				15903BE0245B417D00C5FA6D /* CityServices.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		15903BE3245B420400C5FA6D /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				15903BDC245B128000C5FA6D /* Models.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -94,6 +119,7 @@
 				TargetAttributes = {
 					1577999724507CD10096E470 = {
 						CreatedOnToolsVersion = 11.3.1;
+						LastSwiftMigration = 1130;
 					};
 				};
 			};
@@ -120,7 +146,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1577999C24507CD10096E470 /* main.swift in Sources */,
+				15903BDD245B128000C5FA6D /* Models.swift in Sources */,
+				15F5CB112459E7A400637A64 /* main.swift in Sources */,
+				15903BE1245B417D00C5FA6D /* CityServices.swift in Sources */,
+				15903BDB245B11DD00C5FA6D /* WeatherServices.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -243,10 +272,17 @@
 		157799A024507CD10096E470 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = LT3Q9VH278;
 				ENABLE_HARDENED_RUNTIME = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -254,9 +290,15 @@
 		157799A124507CD10096E470 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = LT3Q9VH278;
 				ENABLE_HARDENED_RUNTIME = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 			};
