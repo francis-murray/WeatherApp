@@ -85,7 +85,7 @@ class CityServices {
                     print("The city \(userInput) you entered could not be found")
                 }
             }
-        } while(userInput != "q")
+        } while(userInput != "q" || cityArray.isEmpty)
         return cityArray
     }
 }
