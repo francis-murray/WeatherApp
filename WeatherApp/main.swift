@@ -12,44 +12,39 @@ let weatherServices = WeatherServices()
 let cityServices = CityServices()
 
 print("Welcome to the WeatherApp!")
+let citiesList = cityServices.loadAllCities(jsonFilename: "city.list.min")
 var usersChoice: String
 
 repeat {
-    print("************************   MENU   ***************************")
-    print("*  Please select an option from below:                      *")
-    print("*  1 - Get current weather conditions for a city            *")
-    print("*  2 - Get current weather conditions for a list of cities  *")
-    print("*  3 - Get 5 day weather forecast for city                  *")
-    print("*  4 - Quit                                                 *")
-    print("*************************************************************")
-    usersChoice = readLine()!
-} while(usersChoice != "1" && usersChoice != "2" && usersChoice != "3" && usersChoice != "4")
+    usersChoice = displayMenu()
 
+    switch usersChoice {
+        case "1":
+            print("You chose menu 1 - Get current weather conditions for a city")
+            if let city = cityServices.getCityFromUser(citiesArray: citiesList) {
+                weatherServices.searchCurrentWeatherByCityId(cityId: String(city.id)).resume()
+            }
+        
+        case "2":
+            print("You chose menu 2 - Get current weather conditions for a list of cities")
+            let citiesArray = cityServices.getCitiesFromUser(citiesArray: citiesList)
+            let citiesIds = citiesArray.map { String($0.id) }
+            weatherServices.searchCurrentWeatherByCityIds(cityIds: citiesIds).resume()
+        
+        case "3":
+            print("You chose value 3 - Get 5 day weather forecast for city")
+            if let city = cityServices.getCityFromUser(citiesArray: citiesList) {
+                print("Here is the 5 day weather forecast for \(city.name), \(city.country)")
+                weatherServices.searchFiveDayWeatherByCityId(cityId: String(city.id)).resume()
+            }
+        case "4":
+            print("Thank you for using the WeatherApp! Goodbye.")
+        default:
+            print("Error, this choice is not in the menu. Please try again")
+    }
+    
+} while (usersChoice != "4")
 
-switch usersChoice {
-    case "1":
-        print("You chose menu 1 - Get current weather conditions for a city")
-        if let city = cityServices.getCityFromUser() {
-            weatherServices.searchCurrentWeatherByCityId(cityId: String(city.id)).resume()
-        }
-    
-    case "2":
-        print("You chose menu 2 - Get current weather conditions for a list of cities")
-        let citiesArray = cityServices.getCitiesFromUser()
-        let citiesIds = citiesArray.map { String($0.id) }
-        weatherServices.searchCurrentWeatherByCityIds(cityIds: citiesIds).resume()
-    
-    case "3":
-        print("You chose value 3 - Get 5 day weather forecast for city")
-        if let city = cityServices.getCityFromUser() {
-            print("Here is the 5 day weather forecast for \(city.name), \(city.country)")
-            weatherServices.searchFiveDayWeatherByCityId(cityId: String(city.id)).resume()
-        }
-    case "4":
-        print("Thank you for using the WeatherApp! Goodbye.")
-    default:
-        print("Error, this choice is not in the menu")
-}
 
 
 RunLoop.main.run()

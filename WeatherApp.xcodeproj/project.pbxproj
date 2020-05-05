@@ -10,6 +10,7 @@
 		15903BDB245B11DD00C5FA6D /* WeatherServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15903BDA245B11DD00C5FA6D /* WeatherServices.swift */; };
 		15903BDD245B128000C5FA6D /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15903BDC245B128000C5FA6D /* Models.swift */; };
 		15903BE1245B417D00C5FA6D /* CityServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15903BE0245B417D00C5FA6D /* CityServices.swift */; };
+		15B60937246210C00042EB93 /* helperFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B60936246210C00042EB93 /* helperFunctions.swift */; };
 		15F5CB112459E7A400637A64 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F5CB102459E7A400637A64 /* main.swift */; };
 /* End PBXBuildFile section */
 
@@ -30,6 +31,7 @@
 		15903BDA245B11DD00C5FA6D /* WeatherServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherServices.swift; sourceTree = "<group>"; };
 		15903BDC245B128000C5FA6D /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		15903BE0245B417D00C5FA6D /* CityServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityServices.swift; sourceTree = "<group>"; };
+		15B60936246210C00042EB93 /* helperFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = helperFunctions.swift; sourceTree = "<group>"; };
 		15F5CB102459E7A400637A64 /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -66,6 +68,7 @@
 				15903BE3245B420400C5FA6D /* Models */,
 				15903BE2245B41E700C5FA6D /* Services */,
 				15F5CB102459E7A400637A64 /* main.swift */,
+				15B60936246210C00042EB93 /* helperFunctions.swift */,
 			);
 			path = WeatherApp;
 			sourceTree = "<group>";
@@ -150,6 +153,7 @@
 				15F5CB112459E7A400637A64 /* main.swift in Sources */,
 				15903BE1245B417D00C5FA6D /* CityServices.swift in Sources */,
 				15903BDB245B11DD00C5FA6D /* WeatherServices.swift in Sources */,
+				15B60937246210C00042EB93 /* helperFunctions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -11,16 +11,47 @@ import Foundation
 class CityServices {
     
     /*
+     *   Function that loads the cities from a json file into an array of City objects
+     */
+    func loadAllCities(jsonFilename: String) -> [City] {
+        // read and decode jsonFileURL to Swift objects array with codable
+        let jsonFileURL = Constants.documentsDirectory.appendingPathComponent(jsonFilename).appendingPathExtension("json")
+        print("Loading cities data from \(jsonFilename).json...");
+        if let citiesData = try? Data(contentsOf: jsonFileURL, options: .alwaysMapped),
+            let cities = try? JSONDecoder().decode([City].self, from: citiesData) {
+                print("Success!");
+                return cities;
+        } else {
+            print("Error loading data from \(jsonFileURL)");
+            return [];
+        }
+    }
+    
+    
+    /*
+     *   Function that searches the a file for the the inputed city name and returns the corresponding City object
+     */
+    func findCity(cityName: String, cities: [City]) -> City?  {
+        for city in cities {
+            if city.name == cityName {
+                return city
+            }
+        }
+        return nil
+    }
+    
+
+    /*
      *   Function that prompts the user for a city name and returns the corresponding City object
      */
-    func getCityFromUser() -> City? {
+    func getCityFromUser(citiesArray: [City]) -> City? {
         var invalidCity: Bool = true
         var userInput: String
         repeat {
             print("Please enter a city name: ")
             userInput = readLine()!
             if (!userInput.isEmpty) {
-                if let tempCity = cityServices.findCity(cityName: userInput, jsonFileURL: Constants.jsonFileURL) {
+                if let tempCity = cityServices.findCity(cityName: userInput, cities: citiesArray) {
                     return tempCity
                 } else {
                     print("The city \(userInput) could not be found. Please try again")
@@ -35,14 +66,14 @@ class CityServices {
     /*
      *   Function that prompts the user for a list of cities and returns an array of corresponding City objects
      */
-    func getCitiesFromUser() -> [City] {
+    func getCitiesFromUser(citiesArray: [City]) -> [City] {
         var cityArray: [City] = []
         var userInput: String
         repeat {
             print("Please add a city name or enter 'q' when your done: ")
             userInput = readLine()!
             if !userInput.isEmpty && userInput != "q" {
-                if let city = cityServices.findCity(cityName: userInput, jsonFileURL: Constants.jsonFileURL) {
+                if let city = cityServices.findCity(cityName: userInput, cities: citiesArray) {
                     print("You have entered \(city.name), \(city.country)")
                     cityArray.append(city)
                     print("Current list of cities: ", terminator: "")
@@ -56,23 +87,5 @@ class CityServices {
             }
         } while(userInput != "q")
         return cityArray
-    }
-    
-    
-    /*
-     *   Function that searches the a file for the the inputed city name and returns the corresponding City object
-     */
-    func findCity(cityName: String, jsonFileURL: URL) -> City?  {
-        // read and decode jsonFileURL to Swift objects array with codable
-        if let retrievedData = try? Data(contentsOf: jsonFileURL), let cities = try? JSONDecoder().decode([City].self, from: retrievedData) {
-            for city in cities {
-                if city.name == cityName {
-                    return city
-                }
-            }
-        } else {
-            print("The data from \(jsonFileURL) could not be decoded")
-        }
-        return nil
     }
 }
