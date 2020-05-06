@@ -14,13 +14,12 @@ class CityServices {
      *   Function that loads the cities from a json file into an array of City objects
      */
     func loadAllCities(jsonFilename: String) -> [City] {
-        // read and decode jsonFileURL to Swift objects array with codable
         let jsonFileURL = Constants.documentsDirectory.appendingPathComponent(jsonFilename)
             .appendingPathExtension("json")
-        print("Loading cities data from \(jsonFilename).json...");
+        print("Loading data from \(jsonFilename).json...");
         if let citiesData = try? Data(contentsOf: jsonFileURL, options: .alwaysMapped),
             let cities = try? JSONDecoder().decode([City].self, from: citiesData) {
-                print("Success!");
+                print("Data loaded successfully!");
                 return cities;
         } else {
             print("Error loading data from \(jsonFileURL)");
@@ -74,7 +73,7 @@ class CityServices {
                 }
             } while (userIndex == nil || !(1...cityIndex-1).contains(userIndex!))
         } else {
-            userIndex = 0
+            userIndex = 1
         }
         print("You have chosen \(cities[userIndex!-1].name), \(cities[userIndex!-1].country)")
         return cities[userIndex!-1]
@@ -110,7 +109,7 @@ class CityServices {
         var cityArray: [City] = []
         var userInput: String
         repeat {
-            print("Please add a city name or enter 'q' when your done: ")
+            print("Please enter a city name or enter 'q' when your done adding cities: ")
             userInput = readLine()!
             if !userInput.isEmpty && userInput != "q" {
                 if let cities = cityServices.findCitiesWithPrefix(prefix: userInput, cities: citiesArray) {
@@ -129,6 +128,8 @@ class CityServices {
                 } else {
                     print("Sorry, the city \"\(userInput)\" could not be found. Please try again")
                 }
+            } else if userInput == "q" && cityArray.isEmpty {
+                print("You must enter at least 1 city")
             }
         } while(userInput != "q" || cityArray.isEmpty)
         return cityArray
