@@ -27,10 +27,8 @@ class WeatherServices {
             let jsonDecoder = JSONDecoder()
             if let data = data,
                 let weatherReport = try? jsonDecoder.decode(WeatherReport.self, from: data) {
-                    if let name = weatherReport.name, let country = weatherReport.sys.country {
-                        print("Weather in \(name), \(country)", terminator: ": ")
-                    }
-                print("\(weatherReport.weather[0].description), temperature: \(weatherReport.main.temp)\(Constants.DEGREE_SYMB), feels like: \(weatherReport.main.feels_like)\(Constants.DEGREE_SYMB)")
+                    printCityTableHeader()
+                    printCityToTableFormat(weatherReport: weatherReport)
             }
             else {
                 print("The API response could not be decoded")
@@ -57,11 +55,9 @@ class WeatherServices {
             let jsonDecoder = JSONDecoder()
             if let data = data,
                 let weatherReports = try? jsonDecoder.decode(WeatherReports.self, from: data) {
+                printCityTableHeader()
                 for weatherReport in weatherReports.list {
-                    if let name = weatherReport.name, let country = weatherReport.sys.country {
-                        print("Weather in \(name), \(country)", terminator: ": ")
-                    }
-                    print("\(weatherReport.weather[0].description), temperature: \(weatherReport.main.temp)\(Constants.DEGREE_SYMB), feels like: \(weatherReport.main.feels_like)\(Constants.DEGREE_SYMB)")
+                    printCityToTableFormat(weatherReport: weatherReport)
                 }
             }
             else {
@@ -77,11 +73,6 @@ class WeatherServices {
      * using the OpenWeatherApp API and returns the corresponding URLSessionDataTask
      */
     func searchFiveDayWeatherByCityId(cityId: String) -> URLSessionDataTask {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .medium
-        dateFormatter.timeStyle = .short
-        // US English Locale (en_US)
-        dateFormatter.locale = Locale(identifier: "en_US")
         let query: [String: String] = [
             "id" : cityId,
             "units": Constants.UNITS,
@@ -94,11 +85,10 @@ class WeatherServices {
             let jsonDecoder = JSONDecoder()
             if let data = data,
                 let weatherReports = try? jsonDecoder.decode(WeatherReports.self, from: data) {
-                for weatherReport in weatherReports.list {
-                    let date = Date(timeIntervalSince1970: weatherReport.dt)
-                    print(dateFormatter.string(from: date), terminator: ": ")
-                    print("\(weatherReport.weather[0].description), temperature: \(weatherReport.main.temp)\(Constants.DEGREE_SYMB), feels like: \(weatherReport.main.feels_like)\(Constants.DEGREE_SYMB)")
-                }
+                    printForecastTableHeader()
+                    for weatherReport in weatherReports.list {
+                        printForecastToTableFormat(weatherReport: weatherReport)
+                    }
             }
             else {
                 print("The API response could not be decoded")

@@ -12,6 +12,9 @@ let weatherServices = WeatherServices()
 let cityServices = CityServices()
 
 print("Welcome to the WeatherApp!")
+print("☀️ 🌤 🌥 ☁️ 🌧 🌦 🌩 ❄️\n")
+
+
 let citiesList = cityServices.loadAllCities(jsonFilename: "city.list.min")
 var usersChoice: String
 
