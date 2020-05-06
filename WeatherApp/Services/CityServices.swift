@@ -15,7 +15,8 @@ class CityServices {
      */
     func loadAllCities(jsonFilename: String) -> [City] {
         // read and decode jsonFileURL to Swift objects array with codable
-        let jsonFileURL = Constants.documentsDirectory.appendingPathComponent(jsonFilename).appendingPathExtension("json")
+        let jsonFileURL = Constants.documentsDirectory.appendingPathComponent(jsonFilename)
+            .appendingPathExtension("json")
         print("Loading cities data from \(jsonFilename).json...");
         if let citiesData = try? Data(contentsOf: jsonFileURL, options: .alwaysMapped),
             let cities = try? JSONDecoder().decode([City].self, from: citiesData) {
@@ -29,18 +30,57 @@ class CityServices {
     
     
     /*
-     *   Function that searches the a file for the the inputed city name and returns the corresponding City object
+     *   Function that looks for all the cities with a specified prefix,
+     *   and returns a list of these cities objects
      */
-    func findCity(cityName: String, cities: [City]) -> City?  {
+    func findCitiesWithPrefix(prefix: String, cities: [City]) -> [City]?  {
+        var results: [City] = []
         for city in cities {
-            if city.name == cityName {
-                return city
+            if city.name.starts(with: prefix)  {
+                results.append(city)
             }
         }
-        return nil
+        if results.isEmpty {
+            return nil
+        }
+        return results
     }
     
-
+    
+    /*
+     *   Function that prompts the user to select a city from a list of cities,
+     *   and returns that City object
+     */
+    func selectCityFromCities(cities: [City]) -> City? {
+        var userIndex: Int?
+        if cities.count > 1 {
+            var cityIndex = 1
+            for city in cities {
+                if (!city.state.isEmpty) {
+                    print("\(cityIndex): \(city.name), \(city.state), \(city.country)")
+                } else {
+                    print("\(cityIndex): \(city.name), \(city.country)")
+                }
+                cityIndex += 1
+            }
+            print("There are \(cities.count) cities matching or starting with that name.")
+            print("Please enter the index of the city you're looking for:")
+            repeat {
+                userIndex = Int(readLine()!)
+                if userIndex == nil {
+                    print("Invalid entry. Please enter a numeric value for the index")
+                } else if !(1...cityIndex-1).contains(userIndex!) {
+                    print("Invalid entry. Please enter a number within the index range")
+                }
+            } while (userIndex == nil || !(1...cityIndex-1).contains(userIndex!))
+        } else {
+            userIndex = 0
+        }
+        print("You have chosen \(cities[userIndex!-1].name), \(cities[userIndex!-1].country)")
+        return cities[userIndex!-1]
+    }
+    
+    
     /*
      *   Function that prompts the user for a city name and returns the corresponding City object
      */
@@ -50,13 +90,13 @@ class CityServices {
         repeat {
             print("Please enter a city name: ")
             userInput = readLine()!
-            if (!userInput.isEmpty) {
-                if let tempCity = cityServices.findCity(cityName: userInput, cities: citiesArray) {
-                    return tempCity
-                } else {
-                    print("The city \(userInput) could not be found. Please try again")
-                    invalidCity = true
-                }
+            if let cities = cityServices.findCitiesWithPrefix(prefix: userInput, cities: citiesArray) {
+                if let selectedCity = selectCityFromCities(cities: cities) {
+                    return selectedCity
+               }
+            } else {
+                print("Sorry, the city \"\(userInput)\" could not be found. Please try again")
+                invalidCity = true
             }
         } while(userInput.isEmpty || invalidCity)
         return nil
@@ -73,16 +113,21 @@ class CityServices {
             print("Please add a city name or enter 'q' when your done: ")
             userInput = readLine()!
             if !userInput.isEmpty && userInput != "q" {
-                if let city = cityServices.findCity(cityName: userInput, cities: citiesArray) {
-                    print("You have entered \(city.name), \(city.country)")
-                    cityArray.append(city)
-                    print("Current list of cities: ", terminator: "")
-                    for city in cityArray {
-                        print("\(city.name), \(city.country)", terminator: "; ")
+                if let cities = cityServices.findCitiesWithPrefix(prefix: userInput, cities: citiesArray) {
+                    if let selectedCity = selectCityFromCities(cities: cities) {
+                        cityArray.append(selectedCity)
+                        print("Current list of cities: ", terminator: "")
+                        for city in cityArray {
+                            if (!city.state.isEmpty) {
+                                print("\(city.name), \(city.state), \(city.country)", terminator: "; ")
+                            } else {
+                                print("\(city.name), \(city.country)", terminator: "; ")
+                            }
+                        }
+                        print("")
                     }
-                    print()
                 } else {
-                    print("The city \(userInput) you entered could not be found")
+                    print("Sorry, the city \"\(userInput)\" could not be found. Please try again")
                 }
             }
         } while(userInput != "q" || cityArray.isEmpty)
